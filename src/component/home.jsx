@@ -440,7 +440,7 @@ const Home = ({ cryptoData }) => {
 
       {/* Main Content Tabs */}
       <div className="p-3">
-        <div className="px-4 bg-gray-800 rounded-lg">
+        <div className="px-2 bg-gray-800 rounded-lg">
           <div className="flex space-x-1">
             {["Favorites", "Hot", "Alpha", "New", "Gainers"].map((tab) => (
               <TabButton
