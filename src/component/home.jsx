@@ -208,40 +208,50 @@ const Icon = ({ type, className = "w-6 h-6", color = "currentColor" }) => {
   return icons[type] || null;
 };
 
-export default function Home() {
-  // const [activeTab, setActiveTab] = useState("Hot");
-  // const [activeCryptoTab, setCryptoTab] = useState("Crypto");
+const Home = ({ cryptoData }) => {
+  // Use passed data or default values
+  const {
+    balance = "145.98",
+    todaysPNL = "+3.70",
+    pnlPercentage = "+2.60",
+    pnlColor = "green",
+    btcPrice = "115,015.81",
+    bnbPrice = "763.71",
+    ethPrice = "3,681.26",
+    solPrice = "166.43",
+    fearGreed = "75",
+  } = cryptoData || {};
 
-  const cryptoData = [
+  const cryptoList = [
     {
       name: "BNB",
       symbol: "🔸",
-      price: "763.71",
-      priceUsd: "$763.71",
+      price: bnbPrice,
+      priceUsd: `$${bnbPrice}`,
       change: "+1.55%",
       isPositive: true,
     },
     {
       name: "BTC",
       symbol: "🔸",
-      price: "115,015.81",
-      priceUsd: "$115,015.81",
+      price: btcPrice,
+      priceUsd: `$${btcPrice}`,
       change: "+0.58%",
       isPositive: true,
     },
     {
       name: "ETH",
       symbol: "🔸",
-      price: "3,681.26",
-      priceUsd: "$3,681.26",
+      price: ethPrice,
+      priceUsd: `$${ethPrice}`,
       change: "+5.45%",
       isPositive: true,
     },
     {
-      name: "ADA",
+      name: "SOL",
       symbol: "🔸",
-      price: "166.43",
-      priceUsd: "$166.43",
+      price: solPrice,
+      priceUsd: `$${solPrice}`,
       change: "+2.89%",
       isPositive: true,
     },
@@ -327,14 +337,21 @@ export default function Home() {
               Est. Total Value(USDT){" "}
               <Icon type="chevronUp" className="w-3 h-3 ml-1" color="#9CA3AF" />
             </div>
-            <div className="text-3xl font-bold text-white">145.98</div>
-            <div className="text-gray-400 text-sm">≈$145.99</div>
-            <div className="text-green-400 text-sm flex items-center mt-1">
-              Today's PNL +3.70 USDT (+2.60%){" "}
+            <div className="text-3xl font-bold text-white">{balance}</div>
+            <div className="text-gray-400 text-sm">≈${balance}</div>
+            <div className="text-sm flex items-center mt-1">
+              <span className="text-white">Today's PNL </span>
+              <span
+                className={`ml-1 ${
+                  pnlColor === "green" ? "text-green-400" : "text-red-400"
+                }`}
+              >
+                {todaysPNL} USDT ({pnlPercentage}%)
+              </span>
               <Icon
                 type="chevronDown"
                 className="w-3 h-3 ml-1"
-                color="#10B981"
+                color={pnlColor === "green" ? "#10B981" : "#EF4444"}
               />
             </div>
           </div>
@@ -351,9 +368,7 @@ export default function Home() {
               <Icon type="gift" className="w-6 h-6" color="#FB923C" />
             </div>
             <span className="text-xs text-gray-400 text-center leading-tight">
-              Rewards
-              <br />
-              Hub
+              Rewards Hub
             </span>
           </div>
           <div className="flex flex-col items-center">
@@ -361,9 +376,7 @@ export default function Home() {
               <Icon type="settings" className="w-6 h-6" color="#FB923C" />
             </div>
             <span className="text-xs text-gray-400 text-center leading-tight">
-              Sharia
-              <br />
-              Earn
+              Sharia Earn
             </span>
           </div>
           <div className="flex flex-col items-center">
@@ -379,9 +392,7 @@ export default function Home() {
               <Icon type="trending" className="w-6 h-6" color="#FB923C" />
             </div>
             <span className="text-xs text-gray-400 text-center leading-tight">
-              Simple
-              <br />
-              Earn
+              Simple Earn
             </span>
           </div>
 
@@ -391,9 +402,7 @@ export default function Home() {
               <Icon type="dollar" className="w-6 h-6" color="#FB923C" />
             </div>
             <span className="text-xs text-gray-400 text-center leading-tight">
-              BNB ATH
-              <br />
-              Button
+              BNB ATH Button
             </span>
           </div>
           <div className="flex flex-col items-center">
@@ -406,6 +415,18 @@ export default function Home() {
               CRYPTOBACK
             </span>
           </div>
+          {/* <div className="flex flex-col items-center">
+            <div className="w-12 h-12 bg-gray-800 rounded-lg flex items-center justify-center mb-2">
+              <span className="text-orange-400 text-sm font-bold">
+                {fearGreed}
+              </span>
+            </div>
+            <span className="text-xs text-gray-400 text-center leading-tight">
+              Fear & Greed
+              <br />
+              Index
+            </span>
+          </div> */}
           <div className="flex flex-col items-center">
             <div className="w-12 h-12 bg-gray-800 rounded-lg flex items-center justify-center mb-2">
               <Icon type="grid" className="w-6 h-6" color="#FB923C" />
@@ -414,29 +435,19 @@ export default function Home() {
               More
             </span>
           </div>
-          {/* <div className="flex flex-col items-center opacity-50">
-            <div className="w-12 h-12 bg-gray-800 rounded-lg flex items-center justify-center mb-2">
-              <Icon type="chart" className="w-6 h-6" color="#FB923C" />
-            </div>
-            <span className="text-xs text-gray-400 text-center leading-tight">
-              Coming
-              <br />
-              Soon
-            </span>
-          </div> */}
         </div>
       </div>
 
       {/* Main Content Tabs */}
       <div className="p-3">
-        <div className="px-4 bg-gray-800 rounded-lg  ">
-          <div className="flex space-x-2 ">
+        <div className="px-4 bg-gray-800 rounded-lg">
+          <div className="flex space-x-2">
             {["Favorites", "Hot", "Alpha", "New", "Gainers"].map((tab) => (
               <TabButton
                 key={tab}
                 title={tab}
-                // isActive={activeTab === tab}
-                // onClick={() => setActiveTab(tab)}
+                // isActive={tab === "Hot"}
+                // onClick={() => {}}
               />
             ))}
             <div className="flex items-center px-2">
@@ -445,13 +456,13 @@ export default function Home() {
           </div>
 
           {/* Crypto/Futures Tabs */}
-          <div className="flex space-x-4 ">
+          <div className="flex space-x-4">
             {["Crypto", "Futures"].map((tab) => (
               <TabButton
                 key={tab}
                 title={tab}
-                // isActive={activeCryptoTab === tab}
-                // onClick={() => setCryptoTab(tab)}
+                // isActive={tab === "Crypto"}
+                // onClick={() => {}}
               />
             ))}
           </div>
@@ -464,13 +475,14 @@ export default function Home() {
           </div>
 
           {/* Crypto List */}
-          <div className="">
-            {cryptoData.map((crypto, index) => (
+          <div>
+            {cryptoList.map((crypto, index) => (
               <CryptoRow key={index} crypto={crypto} />
             ))}
           </div>
         </div>
       </div>
+
       {/* Bottom Navigation Tabs */}
       <div className="mt-6 px-4">
         <div className="flex space-x-4 border-b border-gray-700">
@@ -518,4 +530,6 @@ export default function Home() {
       <div className="h-20"></div>
     </div>
   );
-}
+};
+
+export default Home;
