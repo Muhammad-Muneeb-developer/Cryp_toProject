@@ -4,6 +4,7 @@ const InputForm = ({ onDataSubmit }) => {
   const [formData, setFormData] = useState({
     balance: "145.98",
     todaysPNL: "+3.70",
+    selectedCryptoSet: "HEI", // Default selected crypto set
     pnlPercentage: "+2.60",
     pnlColor: "green", // green or red
     btcPrice: "115,015.81",
@@ -169,7 +170,70 @@ const InputForm = ({ onDataSubmit }) => {
             placeholder="75"
           />
         </div>
+        <div>
+          <label className="block text-gray-300 text-sm font-medium mb-2">
+            Select Crypto Set
+          </label>
+          <select
+            name="selectedCryptoSet"
+            value={formData.selectedCryptoSet}
+            onChange={handleInputChange}
+            className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange-400"
+          >
+            <option value="HEI">HEI</option>
+            <option value="ALPINE">ALPINE</option>
+            <option value="VELODROME">VELODROME</option>
+            <option value="PIO">PIO</option>
+            <option value="COW">COW</option>
+            <option value="OG">OG</option>
+            <option value="ENA">ENA</option>
+            <option value="HFT">HFT</option>
+            <option value="RESOLV">RESOLV</option>
+            <option value="TURBO">TURBO</option>
+            <option value="XVG">XVG</option>
+            <option value="CITY">CITY</option>
+            <option value="CELO">CELO</option>
+            <option value="ARB">ARB</option>
+            <option value="BIO">BIO</option>
+            <option value="PHA">PHA</option>
+            <option value="PEOPLE">PEOPLE</option>
+            <option value="BERA">BERA</option>
+            <option value="BAND">BAND</option>
+            <option value="PORTAL">PORTAL</option>
+            <option value="PORTO">PORTO</option>
+            <option value="RSR">RSR</option>
+            <option value="LINK">LINK</option>
+            <option value="LAZIO">LAZIO</option>
+            <option value="MAGIC">MAGIC</option>
+            <option value="TREE">TREE</option>
+            <option value="RARE">RARE</option>
+            <option value="AZZ">AZZ</option>
+            <option value="DEXE">DEXE</option>
+            <option value="SIGN">SIGN</option>
+            <option value="LV">LV</option>
+            <option value="XLM">XLM</option>
+            <option value="DEGO">DEGO</option>
+            <option value="SUN">SUN</option>
+            <option value="VIC">VIC</option>
+          </select>
+        </div>
 
+        {/* Fear & Greed Index */}
+        <div>
+          <label className="block text-gray-300 text-sm font-medium mb-2">
+            Fear & Greed Index (0-100)
+          </label>
+          <input
+            type="number"
+            name="fearGreed"
+            value={formData.fearGreed}
+            onChange={handleInputChange}
+            min="0"
+            max="100"
+            className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange-400"
+            placeholder="75"
+          />
+        </div>
         {/* Submit Button */}
         <button
           onClick={handleSubmit}

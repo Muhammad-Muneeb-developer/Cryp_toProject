@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-
+import React, { useState, useEffect } from "react";
+import handset from "./headset.png";
 // CSS Icons Component
 const Icon = ({ type, className = "w-6 h-6", color = "currentColor" }) => {
   const icons = {
@@ -213,6 +213,7 @@ const Home = ({ cryptoData }) => {
   const {
     balance = "145.98",
     todaysPNL = "+3.70",
+    selectedCryptoSet = "HEI", // Default selected crypto set
     pnlPercentage = "+2.60",
     pnlColor = "green",
     btcPrice = "115,015.81",
@@ -295,38 +296,66 @@ const Home = ({ cryptoData }) => {
       </div>
     </div>
   );
+  const [loading, setLoading] = useState(true);
+
+  // Simulate loader finish
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 2000); // 2 seconds loader
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <div className="bg-gray-900 min-h-screen text-white max-w-md mx-auto">
-      {/* Header */}
-      <div className="flex items-center justify-between p-4 bg-gray-800">
-        <div className="flex items-center space-x-4">
-          <Icon type="menu" className="w-5 h-5" color="white" />
-          <div className="flex items-center space-x-2">
-            <Icon type="chat" className="w-5 h-5" color="#FBBF24" />
-            <span className="bg-yellow-400 text-black text-xs px-1.5 py-0.5 rounded font-medium">
-              99
+      {loading ? (
+        // Show loader only
+        <div className="flex justify-center items-center py-6">
+          {/* Binance-like diamond loader */}
+          <div className="w-4 h-4 bg-yellow-400 animate-bounce rounded-sm"></div>
+        </div>
+      ) : (
+        // Show real top content when not loading
+        <div className="flex items-center justify-between p-4 bg-gray-800">
+          <div className="flex items-center space-x-4">
+            <Icon type="menu" className="w-7 h-7" color="white" />
+            <div className="flex items-center space-x-2">
+              <svg
+                className="w-6 h-6 text-gray-800 dark:text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 20 18"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M5 5h9M5 9h5m8-8H2a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h4l3.5 4 3.5-4h5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1Z"
+                />
+              </svg>
+            </div>
+          </div>
+          <div className="flex bg-gray-700 rounded-lg p-1">
+            <span className="text-white font-medium text-sm px-4 py-1.5 bg-gray-600 rounded-md">
+              Exchange
             </span>
+            <span className="text-gray-400 text-sm px-4 py-1.5">Wallet</span>
+          </div>
+          <div className="flex items-center space-x-4">
+            <Icon type="refresh" className="w-5 h-5" color="white" />
           </div>
         </div>
-        <div className="flex bg-gray-700 rounded-lg p-1">
-          <span className="text-white font-medium text-sm px-4 py-1.5 bg-gray-600 rounded-md">
-            Exchange
-          </span>
-          <span className="text-gray-400 text-sm px-4 py-1.5">Wallet</span>
-        </div>
-        <div className="flex items-center space-x-4">
-          <Icon type="speaker" className="w-5 h-5" color="white" />
-          <Icon type="refresh" className="w-5 h-5" color="white" />
-        </div>
-      </div>
+      )}
 
       {/* CFX Section */}
       <div className="p-4">
         <div className="flex items-center justify-between mb-4 bg-gray-800 rounded-lg p-3">
           <div className="flex items-center space-x-2">
             <span className="text-orange-400 text-lg">🔥</span>
-            <span className="text-white font-medium text-sm">CFX</span>
+            <span className="text-white font-medium text-sm">
+              {cryptoData.selectedCryptoSet}
+            </span>
           </div>
           <Icon type="search" className="w-5 h-5" color="#9CA3AF" />
         </div>
@@ -441,7 +470,7 @@ const Home = ({ cryptoData }) => {
       {/* Main Content Tabs */}
       <div className="p-3">
         <div className="px-4 bg-gray-800 rounded-lg">
-          <div className="flex ">
+          <div className="flex space-x-2">
             {["Favorites", "Hot", "Alpha", "New", "Gainers"].map((tab) => (
               <TabButton
                 key={tab}
@@ -501,7 +530,7 @@ const Home = ({ cryptoData }) => {
       </div>
 
       {/* Bottom Navigation */}
-      <div className="fixed bottom-0 left-0 right-0 bg-gray-800 border-t border-gray-700 max-w-md mx-auto">
+      <div className="fixed bottom-0 left-0 right-0 stain bg-gray-800 border-t border-gray-700 max-w-md mx-auto">
         <div className="flex justify-around py-2">
           <div className="flex flex-col items-center py-2">
             <Icon type="home" className="w-5 h-5 mb-1" color="#FB923C" />
